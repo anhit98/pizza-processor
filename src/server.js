@@ -6,7 +6,7 @@ const HapiSwagger = require('hapi-swagger');
 const Pack = require('./../package');
 require('dotenv').config()
 const port=process.env.PORT || 3000
-const server = Hapi.server({ port: port}); 
+const server = Hapi.server({ port: port, host: process.env.HOST}); 
 
 const init = async () => {
     
@@ -18,6 +18,7 @@ const init = async () => {
             };
         
         await server.register([
+            Inert,
             Vision,
             {
                 plugin: HapiSwagger,
