@@ -1,0 +1,21 @@
+{
+  "name": "pizza-processor",
+  "version": "1.0.0",
+  "description": "pizza-processor",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm start"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "async": "^3.0.1",
+    "dotenv": "^8.0.0",
+    "hapi": "^18.1.0",
+    "hapi-swagger": "^10.0.1",
+    "joi": "^14.3.1"
+  }
+}
