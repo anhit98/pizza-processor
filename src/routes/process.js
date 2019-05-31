@@ -2,12 +2,13 @@
 const service = require('../services/producer.js');
 const Joi = require('joi');
 
-module.exports =[ {
+module.exports =[ 
+  {
+
     method: 'POST',
     path: '/process/{id}',
     config: {
       tags: ['api'],
-      auth: false,
       handler: service.sendMes,
       validate: {
         params: {

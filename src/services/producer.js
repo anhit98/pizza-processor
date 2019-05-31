@@ -1,4 +1,5 @@
 const Kafka = require("node-rdkafka");
+const Joi = require('joi');
 
 const kafkaConf = {
   "group.id": "cloudkarafka-example",
@@ -10,18 +11,49 @@ const kafkaConf = {
   "sasl.password": process.env.CLOUDKARAFKA_PASSWORD
 };
 const prefix = process.env.CLOUDKARAFKA_TOPIC_PREFIX;
-const topic = `${prefix}.test`;
-const producer = new Kafka.Producer(kafkaConf);
-const maxMessages = 20;
-const genMessage = i => new Buffer(`Kafka example, message number ${i}`);
-producer.on("ready", function(arg) {
-  console.log(`producer ${arg.name} ready.`);
-  for (var i = 0; i < maxMessages; i++) {
-    producer.produce(topic, -1, genMessage(i), i);
+const topics = `${prefix}.updateStatus`;
+console.log(topics)
+
+// Connect to the broker manually
+
+const validatePayload = {
+  status: Joi.string().max(100).required()
+ } 
+ const sendMes = function(req, reply){
+  const producer = new Kafka.Producer(kafkaConf);
+  producer.connect();
+   const id = req.params.id;
+   const status = req.payload.status;
+
+// Wait for the ready event before proceeding
+producer.on('ready', function() {
+  try {
+    producer.produce(
+      // Topic to send the message to
+      topics,
+      // optionally we can manually specify a partition for the message
+      // this defaults to -1 - which will use librdkafka's default partitioner (consistent random for keyed messages, random for unkeyed messages)
+      -1,
+      // Message to send. Must be a buffer
+      Buffer.from(JSON.stringify({_id: id, status: status}))
+    );
+    // console.error({_id: id, status: status});
+  } catch (err) {
+    console.error('A problem occurred when sending our message');
+    console.error(err);
   }
-  setTimeout(() => producer.disconnect(), 0);
+
 });
-producer.on("disconnected", function(arg) {
-  process.exit();
-});
-producer.connect();
+
+// Any errors we encounter, including connection errors
+producer.on('event.error', function(err) {
+  console.error('Error from producer');
+  console.error(err);
+})
+
+return null;
+ }
+ module.exports = {
+  sendMes,
+  validatePayload
+ }
