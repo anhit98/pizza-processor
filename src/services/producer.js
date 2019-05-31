@@ -51,7 +51,7 @@ producer.on('event.error', function(err) {
   console.error(err);
 })
 
-return null;
+return "sent";
  }
  module.exports = {
   sendMes,
