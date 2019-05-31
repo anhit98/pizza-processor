@@ -12,7 +12,7 @@ const init = async () => {
     
     const swaggerOptions = {
             info: {
-                    title: 'Test API Documentation',
+                    title: 'Pizza Processor API Documentation',
                     version: Pack.version,
                 },
             };
@@ -27,8 +27,8 @@ const init = async () => {
         ]);
         await server.start(); 
         console.log(`Server running at: ${server.info.uri}`); 
-        // require("./../src/services/producer");
-        server.route(require('./../src/routes/process'));
+        require("./../src/services/producer");
+        // server.route(require('./../src/routes/process'));
 }; 
 
 init().catch(err => {
