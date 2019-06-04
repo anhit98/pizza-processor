@@ -42,7 +42,7 @@ producer.on('event.error', function(err) {
 //   console.log(log);
 // });
 producer.connect();
-return "dsa"
+return "Message sent successfully!"
 }
 module.exports = {
   sendMes, validatePayload
